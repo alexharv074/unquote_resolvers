@@ -5,3 +5,4 @@ pytest
 pylint
 Jinja2
 ipdb
+pyyaml
