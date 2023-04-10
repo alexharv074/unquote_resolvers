@@ -50,9 +50,7 @@ def unquote_resolvers(
             return item
 
     def process_dict(dct: Dict) -> Dict:
-        for key, value in dct.items():
-            dct[key] = process_item(value)
-        return dct
+        return {key: process_item(value) for key, value in dct.items()}
 
     def process_list(lst: List) -> List:
         return [process_item(value) for value in lst]
