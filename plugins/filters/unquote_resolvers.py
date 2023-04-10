@@ -1,8 +1,12 @@
 from typing import Any, Dict, List, Union
 
 import yaml
-from yaml import CSafeDumper as SafeDumper
 from yaml.nodes import ScalarNode
+
+try:
+    from yaml import CSafeDumper as SafeDumper
+except ImportError:
+    from yaml import SafeDumper  # type: ignore
 
 
 class CustomDumper(SafeDumper):
@@ -25,11 +29,13 @@ CustomDumper.add_representer(Tag, unquoted_tag_representer)
 def unquote_resolvers(
     data: Union[Dict, List],
     indent: int = 2,
+    output_indent: int = 0,
     *args: Any,
     **kw: Any
 ) -> str:
     """
-    Remove quotes around resolver expressions and produce nice YAML.
+    Remove quotes around resolver expressions and
+    produce nice YAML.
     """
 
     def process_item(item: Any) -> Any:
@@ -65,5 +71,11 @@ def unquote_resolvers(
 
     except Exception as e:
         raise Exception("unquote_resolvers - %s" % str(e))
+
+    if output_indent > 0:
+        indented_lines = [
+            " " * output_indent + line for line in transformed.splitlines()
+        ]
+        transformed = "\n".join(indented_lines)
 
     return transformed

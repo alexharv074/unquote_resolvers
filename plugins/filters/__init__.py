@@ -1,6 +1,5 @@
-import warnings
 from jinja2.ext import Extension
-from unquote_resolvers import unquote_resolvers
+from .unquote_resolvers import unquote_resolvers
 
 
 class FilterModule:
@@ -11,14 +10,8 @@ class FilterModule:
 class CustomFiltersExtension(Extension):
     def __init__(self, environment):
         super().__init__(environment)
-        filters = FilterModule().filters()
-        for filter in filters:
-            if filter in environment.filters:
-                warnings.warn("Filter name collision detected changing "
-                              "filter name to custom_{0} "
-                              "to avoid clobbering".format(filter),
-                              RuntimeWarning)
-                filters["custom_" + filter] = filters[filter]
-                del filters[filter]
+        environment.filters["unquote_resolvers"] = \
+            self.unquote_resolvers_filter
 
-        environment.filters.update(filters)
+    def unquote_resolvers_filter(self, data, indent=2, output_indent=2):
+        return unquote_resolvers(data, indent=indent)
