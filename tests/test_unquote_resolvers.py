@@ -1,6 +1,5 @@
-import pytest
-
 from unquote_resolvers import unquote_resolvers
+
 
 def test_single_resolver():
     input_data = {'key': '!stack_output mystack::subnet_a'}
@@ -22,6 +21,7 @@ def test_list_of_resolvers():
     )
     assert unquote_resolvers(input_data) == expected_output
 
+
 def test_nested_resolvers():
     input_data = {
         'Resources': {
@@ -40,6 +40,7 @@ def test_nested_resolvers():
         "  VPC: !stack_output_external mystack::vpc_id\n"
     )
     assert unquote_resolvers(input_data) == expected_output
+
 
 def test_mixed_data():
     input_data = {

@@ -6,3 +6,4 @@ pylint
 Jinja2
 ipdb
 pyyaml
+types-PyYAML
