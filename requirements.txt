@@ -1,0 +1,7 @@
+autopep8
+mypy
+flake8
+pytest
+pylint
+Jinja2
+ipdb
